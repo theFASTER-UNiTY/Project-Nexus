@@ -211,5 +211,6 @@ pyrightconfig.json
 /nexusFS
 *.py.bak
 *.pybak
+*.pybk
 
 # End of https://www.toptal.com/developers/gitignore/api/python
