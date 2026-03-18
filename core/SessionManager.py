@@ -40,7 +40,7 @@ class SessionManager:
         self.sessionActive = True
 
         self.kernel.state["user"] = username
-        self.kernel.state["theme"]["scheme"] = profile.get("theme", "dark")
+        self._applyProfileTheme(profile)
 
         self.kernel.bus.emit(
             "session.started",
@@ -100,7 +100,7 @@ class SessionManager:
             raise RuntimeError("Aucune session active.")
 
         self.currentProfile.update(changes)
-        self.kernel.state["theme"]["scheme"] = self.currentProfile.get("theme", "dark")
+        self._applyProfileTheme(self.currentProfile)
 
         self.kernel.bus.emit(
             "session.profile.updated",
@@ -199,3 +199,21 @@ class SessionManager:
             return self.login(autoUser)
 
         return None
+
+    # -------------------------------------------------
+    # Helpers
+    # -------------------------------------------------
+    def _applyProfileTheme(self, profile: dict) -> None:
+        themeState = self.kernel.state.setdefault("theme", {})
+
+        scheme = profile.get("theme", "dark")
+        accent = profile.get("accent", "blue")
+        fontScale = profile.get("fontScale", 1.0)
+
+        themeState["theme"] = scheme
+        themeState["accent"] = accent
+        themeState["fontScale"] = fontScale
+
+        themeService = self.kernel.services.get("theme")
+        if themeService is not None:
+            themeService.applyTheme()

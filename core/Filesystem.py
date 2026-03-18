@@ -104,7 +104,8 @@ class VirtualFileSystem:
             self.writeJSON(userConfig, {
                 "username": username,
                 "theme": "dark",
-                "accent": "auto",
+                "accent": "blue",
+                "fontScale": 1.0,
                 "wallpaper": "",
                 "autoLogin": False,
                 "passwordHash": ""

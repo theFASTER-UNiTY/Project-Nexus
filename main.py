@@ -11,6 +11,7 @@ from services.WindowService import WindowService
 from services.AppService import AppService
 from services.PasswordService import PasswordService
 from services.PowerService import PowerService
+from services.ThemeService import ThemeService
 from ui.session.SessionRuntime import SessionRuntime
 
 
@@ -28,7 +29,7 @@ def launchNexus():
         app.setApplicationDisplayName(
             f"{app.applicationName()} ({sysInfo.codename} - {app.applicationVersion()})"
         )
-        app.setWindowIcon(QIcon(str(BASE_PATH / "assets" / "icons" / "icon.png")))
+        app.setWindowIcon(QIcon(str(BASE_PATH / "assets" / "icons" / "icon1.png")))
 
         kernel = Kernel()
 
@@ -36,12 +37,17 @@ def launchNexus():
         kernel.services.register(AppService)
         kernel.services.register(PasswordService)
         kernel.services.register(PowerService)
+        kernel.services.register(ThemeService)
 
         kernel.start()
 
         # kernel.state["theme"]["scheme"] = "light"
-        kernel.state["theme"]["accent"] = "blue"
-        theme.apply(app, kernel)
+        # kernel.state["theme"]["accent"] = "blue"
+        # theme.apply(app, kernel)
+
+        themeService = kernel.services.get("theme")
+        themeService.bindApp(app) # type: ignore
+        themeService.applyTheme() # type: ignore
 
         runtime = SessionRuntime(app, kernel)
         runtime.start()
