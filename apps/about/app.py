@@ -24,7 +24,7 @@ class App(AppExtension):
         root.setContentsMargins(16, 16, 16, 16)
         root.setSpacing(12)
         
-        logo = IconWidget(os.path.join(os.path.dirname(__file__), "assets", "logo.png"), 300, 120)
+        logo = IconWidget("assets/images/logo.png", 300, 120)
         logo.setMaximumHeight(120)
 
         nexver = QLabel(f"A propos de Nexus\n\n"
